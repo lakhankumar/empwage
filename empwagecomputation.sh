@@ -1,32 +1,25 @@
-#!/bin/bash -x
+#!/bin/bash
 
-workingDays=5
-maxhrs_month=10
-isfulltime=1
-isparttime=2
+
 emprateperhr=20
-totalemphrs=0
-totalworkingdays=0
-
-function workinghours() {
-         if [ $1 -eq $isfulltime ]
-   then
-      emphrs=8
-   elif [ $1 -eq $isparttime ]
-   then
-      emphrs=4
-   else
-      emphrs=0
-   fi
-        echo $emphrs
-}
-
-while [[ $totalemphrs -lt $maxhrs_month && $totalworkingdays -lt $workingDays ]]
+sum=0
+for ((i=0; i<31; i++))
 do
-        ((totalworkingdays++))
-        empcheck=$((RANDOM%3))
-        workhours="$( workinghours $empcheck )"
-        wage=$(($workhours*$emprateperhr))
-        totalemphrs=$(($workhours+$totalemphrs))
+empcheck=$((RANDOM%3))
+case $empcheck in 
+	1)
+	emphrs=8
+	;;
+	2)
+	emphrs=4
+	;;
+	*)
+	emphrs=0
+	;;
+esac
+total=$(($emprateperhr*$emphrs))
+echo "$i day: $total"
+sum=$(($sum+$total))
 done
- totalSalary=$(($emprateperhr*$totalemphrs))
+echo "total salary: " $sum
+
